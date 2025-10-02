@@ -106,7 +106,7 @@ def process_invoice_extraction(
 _model_cache = {}
 
 
-def get_model(model_name: str = "gemini-1.5-flash-latest", enforce_json: bool = True):
+def get_model(model_name: str = "gemini-2.0-flash", enforce_json: bool = True):
     if model_name in _model_cache:
         return _model_cache[model_name]
 
