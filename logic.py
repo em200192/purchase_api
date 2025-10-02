@@ -10,7 +10,10 @@ import google.generativeai as genai
 from google.api_core import exceptions
 from google.cloud import storage
 from google.oauth2 import service_account
+from dotenv import load_dotenv
 
+
+load_dotenv()
 try:
     from pdf2image import convert_from_bytes
 
@@ -74,7 +77,7 @@ def process_invoice_extraction(
     Orchestrates the entire invoice extraction process.
     Returns (result_data, error_message)
     """
-    raw1, err1 = call_gemini_api(image_bytes, USER_PROMPT, "gemini-1.5-flash-latest")
+    raw1, err1 = call_gemini_api(image_bytes, USER_PROMPT, "gemini-2.0-flash")
     if err1:
         return None, f"Initial extraction failed: {err1}"
 
@@ -85,7 +88,7 @@ def process_invoice_extraction(
         hint = build_vendor_hint(vendor_name)
         if hint:
             prompt2 = USER_PROMPT + "\n" + hint
-            raw2, err2 = call_gemini_api(image_bytes, prompt2, "gemini-1.5-flash-latest")
+            raw2, err2 = call_gemini_api(image_bytes, prompt2, "gemini-2.0-flash")
             if raw2:
                 fixed_data = validate_and_fix_schema(raw2)  # Overwrite with improved data
             else:
